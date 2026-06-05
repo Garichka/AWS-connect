@@ -9,6 +9,8 @@ RUN apt-get update && \
         bash && \
     rm -rf /var/lib/apt/lists/*
 
+COPY docker/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+
 # Copy commands
 COPY ./commands/set_nginx_basic_auth.sh /commands/set_nginx_basic_auth.sh
 
