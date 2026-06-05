@@ -9,6 +9,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Deploy to EC2
@@ -17,22 +18,20 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USERNAME }}
           key: ${{ secrets.AWS_KEY }}
+          command_timeout: 30m
           script: |
             set -e
 
             cd ~/py-fastapi-homework-5-ec2-deploy-task
 
-            echo "Pulling latest code..."
+            echo "Pull latest code..."
             git fetch origin
             git reset --hard origin/main
 
-            echo "Stopping containers..."
-            docker compose -f docker-compose-prod.yml down
+            echo "Start containers (FAST MODE - no rebuild)..."
+            docker compose -f docker-compose-prod.yml up -d
 
-            echo "Building and starting containers..."
-            docker compose -f docker-compose-prod.yml up --build -d
-
-            echo "Cleaning unused images..."
+            echo "Cleanup unused images..."
             docker image prune -f
 
             echo "Deployment completed successfully!"
