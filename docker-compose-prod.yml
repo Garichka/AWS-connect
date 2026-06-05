@@ -73,7 +73,7 @@ services:
     image: minio/minio:latest
     command: server --console-address ":9001" /data
     ports:
-      - "9000:9000"
+      - "9020:9000"
       - "9001:9001"
     env_file:
       - .env
