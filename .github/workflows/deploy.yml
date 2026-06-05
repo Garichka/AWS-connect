@@ -28,10 +28,13 @@ jobs:
             git fetch origin
             git reset --hard origin/main
 
-            echo "Start containers (FAST MODE - no rebuild)..."
+            echo "Removing old containers (safe cleanup)..."
+            docker compose -f docker-compose-prod.yml down --remove-orphans || true
+
+            echo "Starting containers (FAST MODE)..."
             docker compose -f docker-compose-prod.yml up -d
 
-            echo "Cleanup unused images..."
+            echo "Cleaning images..."
             docker image prune -f
 
             echo "Deployment completed successfully!"
