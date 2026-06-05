@@ -21,7 +21,7 @@ jobs:
           script: |
             set -e
 
-            APP_DIR=~/py-fastapi-homework-5-ec2-deploy-task
+            APP_DIR=~/AWS-connect
             cd $APP_DIR
 
             echo "Pull latest code..."
