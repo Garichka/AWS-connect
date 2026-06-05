@@ -12,7 +12,7 @@ services:
     networks:
       - theater_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d movies_db -h 127.0.0.1"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -h 127.0.0.1"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -60,6 +60,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      minio:
+        condition: service_healthy
     networks:
       - theater_network
 
@@ -84,12 +86,13 @@ services:
     volumes:
       - minio_data:/data
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:9000/minio/health/live || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:9000/minio/health/live || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 10
     networks:
       - theater_network
+
 
   minio_mc:
     build:
