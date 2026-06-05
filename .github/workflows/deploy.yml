@@ -9,10 +9,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
 
     steps:
-      - name: Deploy to EC2
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.AWS_HOST }}
@@ -22,19 +21,23 @@ jobs:
           script: |
             set -e
 
-            cd ~/py-fastapi-homework-5-ec2-deploy-task
+            APP_DIR=~/py-fastapi-homework-5-ec2-deploy-task
+            cd $APP_DIR
 
             echo "Pull latest code..."
             git fetch origin
             git reset --hard origin/main
 
-            echo "Removing old containers (safe cleanup)..."
+            echo "FAST CLEAN (only compose stack)..."
             docker compose -f docker-compose-prod.yml down --remove-orphans || true
 
-            echo "Starting containers (FAST MODE)..."
+            echo "Removing leftover project containers (fix conflicts)..."
+            docker ps -a --filter "name=theater" -q | xargs -r docker rm -f || true
+
+            echo "Starting containers (NO BUILD - FAST MODE)..."
             docker compose -f docker-compose-prod.yml up -d
 
-            echo "Cleaning images..."
+            echo "Cleaning unused images..."
             docker image prune -f
 
-            echo "Deployment completed successfully!"
+            echo "DONE 🚀"
