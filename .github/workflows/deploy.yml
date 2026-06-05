@@ -28,16 +28,13 @@ jobs:
             git fetch origin
             git reset --hard origin/main
 
-            echo "FAST CLEAN (only compose stack)..."
+            echo "Stop old stack (safe)..."
             docker compose -f docker-compose-prod.yml down --remove-orphans || true
 
-            echo "Removing leftover project containers (fix conflicts)..."
-            docker ps -a --filter "name=theater" -q | xargs -r docker rm -f || true
-
-            echo "Starting containers (NO BUILD - FAST MODE)..."
+            echo "Start containers (FAST MODE)..."
             docker compose -f docker-compose-prod.yml up -d
 
-            echo "Cleaning unused images..."
+            echo "Cleanup unused images..."
             docker image prune -f
 
             echo "DONE 🚀"
