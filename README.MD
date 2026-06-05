@@ -4,6 +4,7 @@ Welcome to the AWS EC2 deployment guide for our project! This comprehensive tuto
 
 ### What You'll Learn
 
+
 - **AWS Account Registration:** How to create and set up your AWS account.
 - **Selecting the Right Region:** Choosing the optimal AWS region for your deployment.
 - **Launching an EC2 Instance:** Step-by-step instructions to create and configure your virtual machine.
