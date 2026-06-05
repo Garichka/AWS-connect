@@ -23,6 +23,7 @@ Before you begin, ensure you have the following:
 - **Basic Knowledge of Linux Commands:** Familiarity with terminal operations will be beneficial.
 - **Docker Knowledge (Optional):** Understanding Docker can help in managing containers effectively.
 
+
 ### Important Notes
 
 - **Free Tier Eligibility:** This guide utilizes AWS services that are eligible for the free tier. Be mindful of the usage limits to avoid unexpected charges.
